@@ -38,7 +38,7 @@ pipeline {
 		stage('Deploying to server') {
 			steps {
 				script {
-					withDockerContainer(args: "bash -c '-p 8088:8080'", image: dockerImage)
+					withDockerContainer(args: "bash -c '-p 8088:8080'", image: dockerImage){}
 				}
 			}
 		}
