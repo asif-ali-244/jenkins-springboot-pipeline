@@ -37,11 +37,10 @@ pipeline {
 		}
 		stage('Deploying to server') {
 			steps {
-				sh "docker run -p 8088:8080 $dockerImage"
 
-				// script {
-				// 	//withDockerContainer(args: "bash -c '-p 8088:8080'", image: "$dockerImage"){}
-				// }
+				script {
+					dockerImage.run('-p 8088:8080')
+				}
 			}
 		}
 		stage('Cleaning up') { 
