@@ -35,6 +35,13 @@ pipeline {
 				}
 			}
 		}
+		stage('Deploying to server') {
+			steps {
+				script {
+					sh 'docker run -p 8081:8080 $dockerImage'
+				}
+			}
+		}
 		stage('Cleaning up') { 
             steps { 
                 sh "docker rmi $registry:$BUILD_NUMBER" 
