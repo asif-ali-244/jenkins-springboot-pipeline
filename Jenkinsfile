@@ -15,6 +15,7 @@ pipeline {
 			}
 			steps {
 				echo "building ${BUILD_NUMBER}"
+				sh 'chmod +x mvnw'
 				sh './mvnw package'
 			}
 		}
@@ -34,5 +35,10 @@ pipeline {
 				}
 			}
 		}
+		stage('Cleaning up') { 
+            steps { 
+                sh "docker rmi $registry:$BUILD_NUMBER" 
+            }
+        } 
 	}
 }
