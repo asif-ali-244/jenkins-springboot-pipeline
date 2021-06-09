@@ -1,3 +1,4 @@
+@Library('shared-library') _
 pipeline {
 	agent any
 	environment {
@@ -14,6 +15,7 @@ pipeline {
 				branch "*/development"
 			}
 			steps {
+				sendNotifications('STARTED')
 				echo "building ${BUILD_NUMBER}"
 				sh 'chmod +x mvnw'
 				sh './mvnw package'
@@ -35,18 +37,15 @@ pipeline {
 				}
 			}
 		}
-		stage('Deploying to server') {
-			steps {
-
-				script {
-					dockerImage.run('-p 8088:8080')
-				}
-			}
-		}
 		stage('Cleaning up') { 
             steps { 
                 sh "docker rmi $registry:$BUILD_NUMBER" 
             }
         } 
 	}
+	post {
+    always {
+      sendNotifications(currentBuild.result)
+    }
+  }
 }
